@@ -1,0 +1,51 @@
+#DDL
+create database store;
+
+create table countries 
+(code integer primary key, 
+name varchar (20) unique, 
+continent_name varchar (20) not null);
+
+create table users
+(id integer primary key, 
+full_name varchar (20), 
+email varchar (20) unique, 
+gender char (1), 
+check (gender between 'm' and 'f'),
+ date_of_birth varchar (15), 
+ created_at datetime , 
+ country_code int ,
+ foreign key (country_code) references countries (code) );
+ 
+create table orders
+ (id int primary key, 
+ user_id int,
+ foreign key (user_id) references users (id), 
+ status varchar (6) check (status between 'start' and ' finish'), 
+ created_at datetime );
+
+create table order_products 
+(order_id int , 
+product_id int ,
+primary key (order_id, product_id),
+ foreign key (order_id) references orders (id), 
+ foreign key (product_id) references products (id), 
+ quantity int default'0' );
+ 
+create table products
+ (id int primary key, 
+ name varchar (10) not null, 
+ price int default '0',
+ status varchar (10) check (status in ('valid','expired')) , 
+ created_at datetime  );
+
+
+#DML
+insert into countries values (966,'saudi arabia','asia');
+insert into users values (123,'nada alharbi','nadamalharbi@outlook','f','1999','2022-10-15 00:00:00',966);
+insert into orders values ('123','123', 'start','2022-10-15 00:00:00');
+insert into products values ('123','cream',50,'valid','2022-10-15 00:00:00');
+insert into order_products values (500,200,3);
+
+update countries set name='nada muteb' where code =966;
+delete from products where id='123';
